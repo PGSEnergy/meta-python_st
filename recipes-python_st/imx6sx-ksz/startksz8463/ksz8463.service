@@ -1,14 +1,11 @@
 [Unit]
 Description=service to check copper or fiber mode use
-After=multi-user.target
-Conflicts=getty@tty1.service
+DefaultDependencies=no
 
 [Service]
-Type=simple
+Type=idle
 ExecStart=/usr/bin/python3 /ksz/sel_copp_fib.py
-StandardInput=tty-force
-Restart=on-failure
-RestartSec=42s
+StandardOutput=tty
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=sysinit.target

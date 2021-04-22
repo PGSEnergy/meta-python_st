@@ -234,7 +234,7 @@ def iterate_over_pins(start = 0, stop = 127):
 
 def sel_copp_fib():
     if gpio_check_status_silence(pin = 125) == 0:
-        select_coper_mode()
+        select_copper_mode()
         print("Copper mode selected")
     if gpio_check_status_silence(pin = 125) == 1:
         select_fiber_mode()
