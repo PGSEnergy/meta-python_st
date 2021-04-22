@@ -117,6 +117,22 @@ def spitest():
     print(" ")
     print (format(rxData[3],'#X')+format(rxData[2],'X')) 
 
+def spi_read_copp():
+    txData, rxData = spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
+
+    print(" ")
+    print("TX_DATA:")
+    print(txData)
+    for i in range(len(rxData)):
+        print (format(txData[i],'#b')) 
+    print(" ")
+    print("RX_DATA:")
+    print(rxData)
+    for i in range(len(rxData)):
+        print (format(rxData[i],'#b')) 
+    print(" ")
+    print (format(rxData[3],'#X')+format(rxData[2],'X')) 
+
 def iterate_over_values(start = 0X0D8, stop = 0X0D9):
     logging.basicConfig(level=logging.DEBUG, filename=r'iteratelog.log', filemode='w',
                         format='%(name)s - %(levelname)s - %(message)s')
