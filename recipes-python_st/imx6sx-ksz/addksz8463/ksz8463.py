@@ -6,6 +6,8 @@ import os
 import subprocess
 
 class ksz:
+
+
     def blink():
         for i in range(0,10):
             spi2(adress = 0x06C,data = [0x00,0x40],rw = 1,max_speed = 5000000)
@@ -25,7 +27,7 @@ class ksz:
         spi.cshigh = False
         spi.mode = mode
         spi.bits_per_word = bits_word
-        adress = int(convert_base(adress))
+        adress = int(ksz.convert_base(adress))
         # print(adress)
         if rw == 0:
             mask1 = 0b00000000
@@ -61,7 +63,7 @@ class ksz:
         spi.cshigh = False
         spi.mode = mode
         spi.bits_per_word = bits_word
-        adress = int(convert_base(adress))
+        adress = int(ksz.convert_base(adress))
         # print(adress)
         if rw == 0:
             mask1 = 0b00000000
@@ -100,10 +102,10 @@ class ksz:
         if n < to_base:
             return alphabet[n]
         else:
-            return convert_base(n // to_base, to_base) + alphabet[n % to_base]
+            return ksz.convert_base(n // to_base, to_base) + alphabet[n % to_base]
 
     def spitest():
-        txData, rxData = spi(adress = 0x00,data = [0x00,0x00])
+        txData, rxData = ksz.spi(adress = 0x00,data = [0x00,0x00])
 
         print(" ")
         print("TX_DATA:")
@@ -117,8 +119,11 @@ class ksz:
             print (format(rxData[i],'#b')) 
         print(" ")
         print (format(rxData[3],'#X')+format(rxData[2],'X'))
-        return format(rxData[3],'#X')+format(rxData[2],'X')
+        return str(format(rxData[3],'#X')+format(rxData[2],'X'))
 
+    def spitest_silence():
+        txData, rxData = ksz.spi(adress = 0x00,data = [0x00,0x00])
+        return str(format(rxData[3],'#X')+format(rxData[2],'X'))
     def spi_read_copp():
         txData, rxData = spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
 
@@ -158,22 +163,22 @@ class ksz:
 
     # iterate_over_values(stop = 0x01C)
     def port_1_power_off():
-        spi2(adress = 0x04C,data = [0x20,0x39],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x04C,data = [0x20,0x39],rw = 1,max_speed = 5000000)
 
     def port_1_power_on():
-        spi2(adress = 0x04C,data = [0x20,0x31],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x04C,data = [0x20,0x31],rw = 1,max_speed = 5000000)
 
     def port_2_power_off():
-        spi2(adress = 0x058,data = [0x20,0x39],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x058,data = [0x20,0x39],rw = 1,max_speed = 5000000)
 
     def port_2_power_on():
-        spi2(adress = 0x058,data = [0x20,0x31],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x058,data = [0x20,0x31],rw = 1,max_speed = 5000000)
 
     def select_fiber_mode():
-        spi2(adress = 0x0D8,data = [0x3E,0x00],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x0D8,data = [0x3E,0x00],rw = 1,max_speed = 5000000)
 
     def select_copper_mode():
-        spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 1,max_speed = 5000000)
 
     def gpio_check_status(pin = 125):
         print("pin = " + str(pin))
@@ -235,11 +240,11 @@ class ksz:
         print("\033[37m {}".format(" "))
 
     def sel_copp_fib():
-        if gpio_check_status_silence(pin = 125) == 0:
-            select_copper_mode()
+        if ksz.gpio_check_status_silence(pin = 125) == 0:
+            ksz.select_copper_mode()
             print("Copper mode selected")
-        if gpio_check_status_silence(pin = 125) == 1:
-            select_fiber_mode()
+        if ksz.gpio_check_status_silence(pin = 125) == 1:
+            ksz.select_fiber_mode()
             print("Fiber mode selected")
 # method_name = sys.argv[1]
 # try: 

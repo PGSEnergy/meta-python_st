@@ -7,6 +7,6 @@ class Testksz8463(unittest.TestCase):
     self.ksz = ksz()
   #Each test method starts with the keyword test_
   def test_spi(self):
-      self.assertEqual(self.spitest(), "0X8443")
+      self.assertEqual(self.ksz.spitest(), 'X8443')
 if __name__ == "__main__":
   unittest.main()
