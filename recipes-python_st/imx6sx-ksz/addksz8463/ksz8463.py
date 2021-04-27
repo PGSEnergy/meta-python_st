@@ -246,13 +246,15 @@ class ksz:
         if ksz.gpio_check_status_silence(pin = 125) == 1:
             ksz.select_fiber_mode()
             print("Fiber mode selected")
-# method_name = sys.argv[1]
-# try: 
-#     parameter_name = sys.argv[2]
-#     getattr(sys.modules[__name__], method_name)(parameter_name)
-#     print(method_name)
-#     print(parameter_name)
-# except:
-#     print("There is no parameter")
-#     getattr(sys.modules[__name__], method_name)()
-#     print(method_name)
+
+if __name__ == "__main__":
+    method_name =  sys.argv[1]
+    try: 
+        parameter_name = sys.argv[2]
+        getattr(ksz, method_name)(parameter_name)
+        print(method_name)
+        print(parameter_name)
+    except:
+        print("There is no parameter")
+        getattr(ksz, method_name)()
+        print(method_name)
