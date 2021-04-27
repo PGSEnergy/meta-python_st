@@ -13,7 +13,6 @@ do_install() {
 	     install -d 777 ${D}/ksz
 	     install -m 777 ksz8463.py ${D}/ksz/
 		 install -m 777 sel_copp_fib.py ${D}/ksz/
-		 install -m 777 ksz8463_user.py ${D}/ksz/
 }
 
 FILES_${PN} += "/ksz"
