@@ -104,8 +104,8 @@ class ksz:
         else:
             return ksz.convert_base(n // to_base, to_base) + alphabet[n % to_base]
 
-    def spitest():
-        txData, rxData = ksz.spi(adress = 0x00,data = [0x00,0x00])
+    def spitest(adress = 0x00,data = [0x00,0x00]):
+        txData, rxData = ksz.spi2(adress,data)
 
         print(" ")
         print("TX_DATA:")
@@ -158,10 +158,6 @@ class ksz:
         print("\033[32m {}".format("Done"))
         print("\033[37m {}".format(" "))
 
-    # logging.basicConfig(level=logging.DEBUG, filename=r'log.log', filemode='w',
-    #                         format='%(name)s - %(levelname)s - %(message)s')
-
-    # iterate_over_values(stop = 0x01C)
     def port_1_power_off():
         ksz.spi2(adress = 0x04C,data = [0x20,0x39],rw = 1,max_speed = 5000000)
 
@@ -246,6 +242,13 @@ class ksz:
         if ksz.gpio_check_status_silence(pin = 125) == 1:
             ksz.select_fiber_mode()
             print("Fiber mode selected")
+
+    def read_status_port1():
+        result_tx, result_rx = spi2(adress = 0x04E)
+        ksz.spitest(adress = 0x04E)
+
+    def read_status_port2():
+        ksz.spitest(adress = 0X05A)
 
 if __name__ == "__main__":
     method_name =  sys.argv[1]
