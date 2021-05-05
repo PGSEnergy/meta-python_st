@@ -244,7 +244,7 @@ class ksz:
             print("Fiber mode selected")
 
     def read_status_port1():
-        result_tx, result_rx = spi2(adress = 0x04E)
+        result_tx, result_rx = ksz.spi2(adress = 0x04E)
         ksz.spitest(adress = 0x04E)
 
     def read_status_port2():
