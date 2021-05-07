@@ -5,12 +5,12 @@ import sys
 
 
 class hsr:
-    def hsr_enable():
+    def hsr_enable(ip = "192.168.2.20",version = 1,supervision = 45):
         hsr_comand = ["ifconfig eth0 0.0.0.0 down && ifconfig eth1 0.0.0.0 down",
                     "ifconfig eth0 hw ether 70:FF:76:1C:0E:8C && ifconfig eth1 hw ether 70:FF:76:1C:0E:8C",
                     "ifconfig eth0 up && ifconfig eth1 up",
-                    "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision 45 version 1",
-                    "ifconfig hsr0 192.168.0.20"]
+                    "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision " + supervision + " version " + str(version),
+                    "ifconfig hsr0 " + ip]
         mask = 0b00000100
         result_tx1, result_rx1 = ksz.spi2(adress = 0x04E)
         result_tx2, result_rx2 = ksz.spi2(adress = 0x05A)
@@ -27,10 +27,10 @@ class hsr:
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
 
-    def hsr_disable():
+    def hsr_disable(eth0_ip = "192.168.2.100"):
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
-        os.system("ifconfig eth0 192.168.2.12 && ifconfig eth1 down")
+        os.system("ifconfig eth0 "+ eth0_ip +" && ifconfig eth1 down")
         print("\033[32m {}".format("Ok"))
         print("\033[37m {}".format(" "))
     
@@ -57,15 +57,18 @@ class hsr:
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
             print(ret)
+    
 
 if __name__ == "__main__":
     method_name =  sys.argv[1]
+    parametr_count = len(sys.argv)-2
+    args = []
+    
+    for i in range(2,len(sys.argv)):
+        args.append(sys.argv[i])
     try: 
-        parameter_name = sys.argv[2]
-        getattr(hsr, method_name)(parameter_name)
-        print(method_name)
-        print(parameter_name)
+        getattr(hsr, method_name)(*args)
+
     except:
         print("There is no parameter")
         getattr(hsr, method_name)()
-        print(method_name)
