@@ -77,7 +77,7 @@ class hsr:
 
 
 
-    def hsr_disable(eth0_ip = "192.168.2.100"):
+    def hsr_disable(self,eth0_ip = "192.168.2.100"):
         mac = hsr.find_mac_in_txt()
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
