@@ -10,50 +10,14 @@ class ksz:
 
     def blink():
         for i in range(0,10):
-            spi2(adress = 0x06C,data = [0x00,0x40],rw = 1,max_speed = 5000000)
-            spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+            ksz.spi2(adress = 0x06C,data = [0x00,0x40],rw = 1,max_speed = 5000000)
+            ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
             time.sleep(1)
-            spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-            spi2(adress = 0x084,data = [0x00,0x40],rw = 1,max_speed = 5000000)
+            ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+            ksz.spi2(adress = 0x084,data = [0x00,0x40],rw = 1,max_speed = 5000000)
             time.sleep(1)
-        spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-        spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-        
-    def spi(adress,data = [0x00,0x00],rw = 0,bus = 0,dev = 0,max_speed = 12000000,mode = 0b00,bits_word = 8):
-        spi = spidev.SpiDev()
-        spi.open(bus, dev)
-        spi.max_speed_hz = max_speed
-        spi.lsbfirst = False
-        spi.cshigh = False
-        spi.mode = mode
-        spi.bits_per_word = bits_word
-        adress = int(ksz.convert_base(adress))
-        # print(adress)
-        if rw == 0:
-            mask1 = 0b00000000
-        elif rw == 1:
-            mask1 = 0b10000000 
-        mask2 = 0b00001100
-        result_tx = []
-        save = adress
-        adress = adress >> 2
-        adress = adress + mask1
-        # print(adress)
-        result_tx.append(adress)
-
-        adress = save
-        adress = adress << 6
-        # print(adress)
-        for i in range(8, 15):
-            adress = adress & ~(1 << i)
-        adress = adress + mask2
-        # print(adress)
-        result_tx.append(adress)
-        for i in range(0,len(data)):
-            result_tx.append(data[i])
-        result_rx = spi.xfer(result_tx)
-        spi.close()
-        return result_tx, result_rx
+        ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
     def spi2(adress,data = [0x00,0x00],rw = 0,bus = 0,dev = 0,max_speed = 12000000,mode = 0b00,bits_word = 8):
         spi = spidev.SpiDev()
@@ -122,10 +86,10 @@ class ksz:
         return str(format(rxData[3],'#X')+format(rxData[2],'X'))
 
     def spitest_silence():
-        txData, rxData = ksz.spi(adress = 0x00,data = [0x00,0x00])
+        txData, rxData = ksz.spi2(adress = 0x00,data = [0x00,0x00])
         return str(format(rxData[3],'#X')+format(rxData[2],'X'))
     def spi_read_copp():
-        txData, rxData = spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
+        txData, rxData = ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
 
         print(" ")
         print("TX_DATA:")
@@ -148,7 +112,7 @@ class ksz:
             print(hex(adress))
             logging.info(" ")
             logging.info(hex(adress))
-            txData, rxData = spi2(adress = adress,data = [0x00,0x00],rw = 0)
+            txData, rxData = ksz.spi2(adress = adress,data = [0x00,0x00],rw = 0)
             TX = format(txData[0],'#X')+format(txData[1],'X')
             RX = format(rxData[3],'#X')+format(rxData[2],'X')
             logging.info("TX:" + TX)
@@ -226,7 +190,7 @@ class ksz:
         adress = start
         while(adress < stop):
             try:
-                gpio_check_status_silence(pin = adress)
+                ksz.gpio_check_status_silence(pin = adress)
                 adress = adress + 1
             except:
                 logging.info("GPIO " + str(adress) +" status = busy")
@@ -252,12 +216,14 @@ class ksz:
 
 if __name__ == "__main__":
     method_name =  sys.argv[1]
+    parametr_count = len(sys.argv)-2
+    args = []
+    
+    for i in range(2,len(sys.argv)):
+        args.append(sys.argv[i])
     try: 
-        parameter_name = sys.argv[2]
-        getattr(ksz, method_name)(parameter_name)
-        print(method_name)
-        print(parameter_name)
+        getattr(ksz, method_name)(*args)
+
     except:
         print("There is no parameter")
         getattr(ksz, method_name)()
-        print(method_name)
