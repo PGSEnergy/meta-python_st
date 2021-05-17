@@ -7,6 +7,17 @@ import subprocess
 
 class ksz:
 
+    def switch_enable():
+        ksz.spi2(adress = 0x000,data = [0x01,0x00],rw = 1,max_speed = 5000000)
+    
+    def switch_disable():
+        ksz.spi2(adress = 0x000,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+
+
+    def global_reset():
+        ksz.spi2(adress = 0x126,data = [0x01,0x00],rw = 1,max_speed = 5000000)
+        time.sleep(1)
+        ksz.spi2(adress = 0x126,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
     def blink():
         for i in range(0,10):

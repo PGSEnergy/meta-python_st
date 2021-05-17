@@ -46,7 +46,7 @@ class hsr:
             if a1[0] == interface:
                 return a1[1]
                 
-    def hsr_enable(ip = "192.168.2.20",version = "1",supervision = "45"):
+    def hsr_enable(self,ip = "192.168.2.20",version = "1",supervision = "45"):
         mac_arr = hsr.get_mac()
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
@@ -55,7 +55,7 @@ class hsr:
 
         hsr_comand = ["ifconfig eth0 0.0.0.0 down && ifconfig eth1 0.0.0.0 down",
                     "ifconfig eth0 hw ether "+mac+" && ifconfig eth1 hw ether "+mac,
-                    "ifconfig eth0 up && ifconfig eth1 up",
+                    "ifconfig eth0 0.0.0.0 up && ifconfig eth1 0.0.0.0 up",
                     "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision " + supervision + " version " + version,
                     "ifconfig hsr0 " + ip]
         mask = 0b00000100
