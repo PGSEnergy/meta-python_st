@@ -6,7 +6,7 @@ import uuid
 
 
 class hsr:
-    def get_mac(interface = "eth1"):
+    def get_mac(self,interface = "eth1"):
         f = open('mac.txt', 'w')
         command = "ifconfig | grep HWaddr"
         HW = "HWaddr"
@@ -32,7 +32,7 @@ class hsr:
                 mac = a1[i][1]
 
         return a1
-    def find_mac_in_txt(interface = "eth1"):
+    def find_mac_in_txt(self,interface = "eth1"):
         f = open('mac.txt')
         counter = 0
         a = []
@@ -46,8 +46,9 @@ class hsr:
             if a1[0] == interface:
                 return a1[1]
                 
-    def hsr_enable(self,ip = "192.168.2.20",version = "1",supervision = "45"):
-        mac_arr = hsr.get_mac()
+    def hsr_enable(self,ip = "192.168.2.20",netmask = "255.255.255.0",version = "1",supervision = "45"):
+        os.system("ifconfig eth1 0.0.0.0")
+        mac_arr = hsr.get_mac(self)
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
                 mac = mac_arr[i][1]
@@ -57,7 +58,7 @@ class hsr:
                     "ifconfig eth0 hw ether "+mac+" && ifconfig eth1 hw ether "+mac,
                     "ifconfig eth0 0.0.0.0 up && ifconfig eth1 0.0.0.0 up",
                     "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision " + supervision + " version " + version,
-                    "ifconfig hsr0 " + ip]
+                    "ifconfig hsr0 inet " + ip + " netmask " + netmask]
         mask = 0b00000100
         result_tx1, result_rx1 = ksz.spi2(adress = 0x04E)
         result_tx2, result_rx2 = ksz.spi2(adress = 0x05A)
@@ -71,6 +72,7 @@ class hsr:
                     print("\033[31m {}".format("ERROR")+"\033[37m {}".format("Something wrong with " + hsr_comand[i]))
                     print("\033[37m {}".format(" "))
                     return 127
+            time.sleep(2)
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
 
@@ -78,7 +80,7 @@ class hsr:
 
 
     def hsr_disable(self,eth0_ip = "192.168.2.100"):
-        mac = hsr.find_mac_in_txt()
+        mac = hsr.find_mac_in_txt(self)
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
         os.system("ifconfig eth0 "+ eth0_ip +" && ifconfig eth1 hw ether "+mac+" down")
@@ -107,7 +109,7 @@ class hsr:
             
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
-            print(ret)
+            # print(res)
     
 
 if __name__ == "__main__":
