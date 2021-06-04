@@ -8,15 +8,15 @@ int main(void)
 {
 int fd;
 char buffer[2];
-if((fd=open("TEST.TST", O_RDONLY))==-1) {
+if((fd=open("prp_conf.txt", O_RDONLY))==-1) {
 printf("Cannot open file.\n");
 exit(1);
 }
 int ret = read(fd, buffer, 2);
-if(buffer[0] == 'y'){
+if(buffer[0] == '1'){
     printf("Y");
 }
-if(buffer[0] == 'n'){
+if(buffer[0] == '0'){
     printf("N");
 }
 // printf("%i",buffer);

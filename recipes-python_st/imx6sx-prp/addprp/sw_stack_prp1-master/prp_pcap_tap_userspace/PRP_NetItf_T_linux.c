@@ -897,7 +897,7 @@ int main(int argc, char* argv[])
 			// 	if (buffer[0] == 'h') {
 			// 		show_help();
 			// 	}
-				if (buffer[0] == 'q') {
+				if (buffer[0] == '0') {
 					exit_prp = TRUE;
 				}
 			// 	if (buffer[0] == 's') {
