@@ -9,15 +9,31 @@ class ksz:
 
     def switch_enable():
         ksz.spi2(adress = 0x000,data = [0x01,0x00],rw = 1,max_speed = 5000000)
+        
     
     def switch_disable():
         ksz.spi2(adress = 0x000,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
+    def switch_power_off():#broken
+        # result_tx, result_rx = ksz.spi2(adress=0X032,data=[0x1000,0x00],rw=1)
+        # print(result_tx,result_rx)
+        ksz.spitest(adress=0X032,data=[0x02,0x00],rw=1)
+        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
+    def switch_power_on():#broken
+        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=1)
+        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
+        
 
-    def global_reset():
-        ksz.spi2(adress = 0x126,data = [0x01,0x00],rw = 1,max_speed = 5000000)
-        time.sleep(1)
-        ksz.spi2(adress = 0x126,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+    def global_reset():#broken
+        # ksz.spi2(adress = 0x126,data = [0x1,0x1],rw = 1,max_speed = 5000000)
+        ksz.spitest(adress=0x126,data=[0x1,0x00],rw=1)
+        print("read")
+        ksz.spitest(adress=0x126,data=[0x01,0x00],rw=0)
+        # time.sleep(1)
+        # ksz.spi2(adress = 0x126,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        ksz.spitest(adress=0x126,data=[0x00,0x00],rw=1)
+        print("read")
+        ksz.spitest(adress=0x126,data=[0x00,0x00],rw=0)
 
     def blink():
         for i in range(0,10):
@@ -79,8 +95,8 @@ class ksz:
         else:
             return ksz.convert_base(n // to_base, to_base) + alphabet[n % to_base]
 
-    def spitest(adress = 0x00,data = [0x00,0x00]):
-        txData, rxData = ksz.spi2(adress,data)
+    def spitest(adress = 0x00,data = [0x00,0x00],rw = 0):
+        txData, rxData = ksz.spi2(adress,data,rw)
 
         print(" ")
         print("TX_DATA:")
@@ -220,10 +236,20 @@ class ksz:
 
     def read_status_port1():
         result_tx, result_rx = ksz.spi2(adress = 0x04E)
-        ksz.spitest(adress = 0x04E)
+        if result_rx[3] == 8:
+            print("Port 1 is down")
+        if result_rx[3] == 44:
+            print("Port 1 is up")
+
 
     def read_status_port2():
-        ksz.spitest(adress = 0X05A)
+        result_tx, result_rx = ksz.spi2(adress = 0x05A)
+        if result_rx[3] == 8:
+            print("Port 2 is down")
+        if result_rx[3] == 44:
+            print("Port 2 is up")
+    def test():
+        print("test")
 
 if __name__ == "__main__":
     method_name =  sys.argv[1]
