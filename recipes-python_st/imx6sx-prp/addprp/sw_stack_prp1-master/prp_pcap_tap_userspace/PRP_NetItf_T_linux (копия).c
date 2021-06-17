@@ -657,12 +657,12 @@ int main(int argc, char* argv[])
 	}
 
 	/* print zhaw screen */
-	// int c;
-	// FILE *fp = fopen("zhaw", "rb");
-	// while ((c = fgetc(fp)) != EOF) {
-	// 	printf("%c",(char)c);
-	// }
-	// fclose(fp);
+	int c;
+	FILE *fp = fopen("zhaw", "rb");
+	while ((c = fgetc(fp)) != EOF) {
+		printf("%c",(char)c);
+	}
+	fclose(fp);
 
 	/* renice: highest priority*/
 	errno = 0;
@@ -814,8 +814,6 @@ int main(int argc, char* argv[])
 	delta.tv_sec = 0;
 	delta.tv_usec = 20000;
 
-	
-
 	while(!exit_prp) {
 		int retval;
 		fd_set descriptors;
@@ -849,84 +847,64 @@ int main(int argc, char* argv[])
 		} else if (retval == 0) {
 			/* timeout - do nothing*/
 		} else {
-			int fd;
-	
-			
 			if (FD_ISSET(STDIN_FILENO,&descriptors)) {
-				if((fd=open("prp_conf.txt", O_RDONLY))==-1) {
-				printf("Cannot open file.\n");
-				exit_prp = TRUE;
+				read(STDIN_FILENO,buffer,ETHER_MAX_LEN);
+				if (buffer[0] == 'c') {
+					user_log.counter_ = !user_log.counter_;
+					if (!user_log.counter_) {
+						PRP_PRINTF("%s\n","==== Statistic counter logging disabled");
+					}
 				}
-			
-				read(fd,buffer,ETHER_MAX_LEN);
-				// char buf[2];
-				// read(fd, buf, 2);
-				// if(buffer[0] == 'y'){
-				// 	printf("Y");
-				// }
-				// if(buf[0] == 'q'){
-				// 	exit_prp = TRUE;
-				// }
-			// 	if (buffer[0] == 'c') {
-			// 		user_log.counter_ = !user_log.counter_;
-			// 		if (!user_log.counter_) {
-			// 			PRP_PRINTF("%s\n","==== Statistic counter logging disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'd') {
-			// 		user_log.discard_ = !user_log.discard_;
-			// 		if (!user_log.discard_) {
-			// 			PRP_PRINTF("%s\n","==== Discard list logging disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'D') {
-			// 		user_log.consistency_ = !user_log.consistency_;
-			// 		if (!user_log.consistency_) {
-			// 			PRP_PRINTF("%s\n","==== Discard consistency check disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'e') {
-			// 		PRP_LogItf_T_print_config();
-			// 	}
-			// 	if (buffer[0] == 'f') {
-			// 		user_log.frame_ = !user_log.frame_;
-			// 		if (!user_log.frame_) {
-			// 			PRP_PRINTF("%s\n","==== RX frame content logging disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'h') {
-			// 		show_help();
-			// 	}
-				if (buffer[0] == '0') {
+				if (buffer[0] == 'd') {
+					user_log.discard_ = !user_log.discard_;
+					if (!user_log.discard_) {
+						PRP_PRINTF("%s\n","==== Discard list logging disabled");
+					}
+				}
+				if (buffer[0] == 'D') {
+					user_log.consistency_ = !user_log.consistency_;
+					if (!user_log.consistency_) {
+						PRP_PRINTF("%s\n","==== Discard consistency check disabled");
+					}
+				}
+				if (buffer[0] == 'e') {
+					PRP_LogItf_T_print_config();
+				}
+				if (buffer[0] == 'f') {
+					user_log.frame_ = !user_log.frame_;
+					if (!user_log.frame_) {
+						PRP_PRINTF("%s\n","==== RX frame content logging disabled");
+					}
+				}
+				if (buffer[0] == 'h') {
+					show_help();
+				}
+				if (buffer[0] == 'q') {
 					exit_prp = TRUE;
 				}
-			// 	if (buffer[0] == 's') {
-			// 		user_log.sf_ = !user_log.sf_;
-			// 		if (!user_log.sf_) {
-			// 			PRP_PRINTF("%s\n","==== RX supervision status logging disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 't') {
-			// 		user_log.trailer_ = !user_log.trailer_;
-			// 		if (!user_log.trailer_) {
-			// 			PRP_PRINTF("%s\n","==== RTC logging disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'v') {
-			// 		user_log.verbose_ = !user_log.verbose_;
-			// 		if (!user_log.verbose_) {
-			// 			PRP_PRINTF("%s\n","==== Verbose log disabled");
-			// 		}
-			// 	}
-			// 	if (buffer[0] == 'x') {
-			// 		PRP_LogItf_T_reset();
-			// 	}
-			// 	if (buffer[0] == 'S') {
-			// 		system("");
-			// 	}
-			close(fd);
+				if (buffer[0] == 's') {
+					user_log.sf_ = !user_log.sf_;
+					if (!user_log.sf_) {
+						PRP_PRINTF("%s\n","==== RX supervision status logging disabled");
+					}
+				}
+				if (buffer[0] == 't') {
+					user_log.trailer_ = !user_log.trailer_;
+					if (!user_log.trailer_) {
+						PRP_PRINTF("%s\n","==== RTC logging disabled");
+					}
+				}
+				if (buffer[0] == 'v') {
+					user_log.verbose_ = !user_log.verbose_;
+					if (!user_log.verbose_) {
+						PRP_PRINTF("%s\n","==== Verbose log disabled");
+					}
+				}
+				if (buffer[0] == 'x') {
+					PRP_LogItf_T_reset();
+				}
 			}
-			
+
 			if (FD_ISSET(tap,&descriptors)) {
 				unsigned int len;
 				len = read(tap,buffer,ETHER_MAX_LEN);
