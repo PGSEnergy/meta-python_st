@@ -81,7 +81,6 @@ class hsr:
             
             for i in range(0,len(hsr_comand)):
                 res = os.system(hsr_comand[i])
-                time.sleep(2)
                 if res != 0 and silent == 0:
                     print("\033[31m {}".format("ERROR")+"\033[37m {}".format("Something wrong with " + hsr_comand[i]))
                     print("\033[37m {}".format(" "))
