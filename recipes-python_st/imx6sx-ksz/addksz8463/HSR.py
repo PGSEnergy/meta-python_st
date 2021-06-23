@@ -6,6 +6,17 @@ import uuid
 
 
 class hsr:
+    def calculator(num):
+        degree = int(num / 8)
+        ret = ""
+        mask = 0b11111111
+        for i in range(0,degree):
+            ret += str(mask)+"."
+        mask = int('{:08b}'.format(mask >> 8 - num%8)[::-1], 2)
+        ret += str(mask)
+        for i in range(0, 4-degree-1):
+            ret +=".0"
+        return ret
     def get_mac(self,interface = "eth1"):
         f = open('mac.txt', 'w')
         command = "ifconfig | grep HWaddr"
@@ -46,19 +57,20 @@ class hsr:
             if a1[0] == interface:
                 return a1[1]
                 
-    def hsr_enable(self,ip = "192.168.2.20",netmask = "255.255.255.0",version = "1",supervision = "45"):
+    def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
+    netmask = str(calculator(int(os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
+    version = "1",supervision = "45"):
         os.system("ifconfig eth1 0.0.0.0")
         mac_arr = hsr.get_mac(self)
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
                 mac = mac_arr[i][1]
-
-
+                
         hsr_comand = ["ifconfig eth0 0.0.0.0 down && ifconfig eth1 0.0.0.0 down",
                     "ifconfig eth0 hw ether "+mac+" && ifconfig eth1 hw ether "+mac,
                     "ifconfig eth0 0.0.0.0 up && ifconfig eth1 0.0.0.0 up",
                     "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision " + supervision + " version " + version,
-                    "ifconfig hsr0 inet " + ip + " netmask " + netmask]
+                    "ifconfig hsr0 " + ip[0:len(ip)-1] + " netmask " + str(netmask)]
         mask = 0b00000100
         result_tx1, result_rx1 = ksz.spi2(adress = 0x04E)
         result_tx2, result_rx2 = ksz.spi2(adress = 0x05A)
@@ -66,9 +78,11 @@ class hsr:
         if result_rx1[3] & mask == 4 and result_rx2[3] & mask == 4:
             print("Please plug out one of switch ethernet wire")
         else:
+            
             for i in range(0,len(hsr_comand)):
                 res = os.system(hsr_comand[i])
-                if res != 0:
+                time.sleep(2)
+                if res != 0 and silent == 0:
                     print("\033[31m {}".format("ERROR")+"\033[37m {}".format("Something wrong with " + hsr_comand[i]))
                     print("\033[37m {}".format(" "))
                     return 127
@@ -79,11 +93,11 @@ class hsr:
 
 
 
-    def hsr_disable(self,eth0_ip = "192.168.2.100"):
+    def hsr_disable(self,eth0_ip = os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
         mac = hsr.find_mac_in_txt(self)
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
-        os.system("ifconfig eth0 "+ eth0_ip +" && ifconfig eth1 hw ether "+mac+" down")
+        os.system("ifconfig eth0 "+ eth0_ip[0:len(eth0_ip)-1] +" && ifconfig eth1 hw ether "+mac+" down")
         print("\033[32m {}".format("Ok"))
         print("\033[37m {}".format(" "))
     

@@ -4,6 +4,7 @@ LICENSE = "CLOSED"
 
 SRC_URI = "file://sw_stack_prp1-master \
 		   file://PRP.sh \
+		   file://start.py \
 		   file://end.sh"
 
 S = "${WORKDIR}"
