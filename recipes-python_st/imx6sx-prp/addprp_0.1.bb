@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 
 SRC_URI = "file://sw_stack_prp1-master \
 		   file://PRP.sh \
-		   file://start.py \
+		   file://PRP.py \
 		   file://end.sh"
 
 S = "${WORKDIR}"
@@ -15,7 +15,7 @@ do_install() {
 		 cp -r ${WORKDIR}/sw_stack_prp1-master ${D}/prp/
 		 install -m 777 PRP.sh ${D}/prp/
 		 install -m 777 end.sh ${D}/prp/
-		 install -m 777 start.py ${D}/prp/
+		 install -m 777 PRP.py ${D}/prp/
 }
 
 FILES_${PN} += "/prp"
