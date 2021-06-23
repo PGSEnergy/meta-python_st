@@ -17,4 +17,3 @@ if [ $ret != '0' ]; then
 else
   echo "Change prp_conf.txt value"  
 fi
-

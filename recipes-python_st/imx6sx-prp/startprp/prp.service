@@ -3,9 +3,10 @@ Description=service start prp
 DefaultDependencies=no
 
 [Service]
-Type=simple
-ExecStart=/bin/sh /PRP.sh
+Type=oneshot
+ExecStart=/prp/PRP.sh
+ExecStop=/prp/end.sh
 StandardOutput=tty
 
 [Install]
-WantedBy=sysinit.target
+# WantedBy=sysinit.target
