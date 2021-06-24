@@ -60,7 +60,8 @@ class hsr:
     def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
     netmask = str(calculator(int(os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
     version = "1",supervision = "45"):
-        os.system("ifconfig eth1 0.0.0.0")
+        os.system("ifconfig eth0 0.0.0.0 up")
+        os.system("ifconfig eth1 0.0.0.0 up")
         mac_arr = hsr.get_mac(self)
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
@@ -92,7 +93,7 @@ class hsr:
 
 
 
-    def hsr_disable(self,eth0_ip = os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
+    def hsr_disable(self,eth0_ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
         mac = hsr.find_mac_in_txt(self)
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
