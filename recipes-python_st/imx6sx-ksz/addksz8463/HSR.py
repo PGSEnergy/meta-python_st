@@ -57,8 +57,8 @@ class hsr:
             if a1[0] == interface:
                 return a1[1]
                 
-    def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
-    netmask = str(calculator(int(os.popen('grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
+    def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
+    netmask = str(calculator(int(os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
     version = "1",supervision = "45"):
         os.system("ifconfig eth1 0.0.0.0")
         mac_arr = hsr.get_mac(self)

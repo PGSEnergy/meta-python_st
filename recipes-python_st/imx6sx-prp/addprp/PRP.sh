@@ -1,8 +1,8 @@
 #! /bin/sh
 (kill -TSTP $$; kill -CONT $$)
 sleep 1
-ip="$(grep -v 'Gate' /etc/systemd/network/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")"
-netmask = "$(grep -v "Gate" /etc/systemd/network/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+")"
+ip="$(grep -v 'Gate' /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}")"
+netmask = "$(grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+")"
 sleep 7; ifconfig prp1 $ip netmask $netmask  &
 cd /prp/sw_stack_prp1-master/prp_pcap_tap_userspace/
 echo 1 > prp_conf.txt
