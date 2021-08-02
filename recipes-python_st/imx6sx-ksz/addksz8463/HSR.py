@@ -5,7 +5,8 @@ import sys
 import uuid
 
 
-class hsr:
+class Hsr:
+
     def calculator(num):
         degree = int(num / 8)
         ret = ""
@@ -17,6 +18,7 @@ class hsr:
         for i in range(0, 4-degree-1):
             ret +=".0"
         return ret
+
     def get_mac(self,interface = "eth1"):
         f = open('mac.txt', 'w')
         command = "ifconfig | grep HWaddr"
@@ -43,6 +45,7 @@ class hsr:
                 mac = a1[i][1]
 
         return a1
+
     def find_mac_in_txt(self,interface = "eth1"):
         f = open('mac.txt')
         counter = 0
@@ -60,18 +63,18 @@ class hsr:
     def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
     netmask = str(calculator(int(os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
     version = "1",supervision = "45"):
-        os.system("ifconfig eth0 0.0.0.0 up")
-        os.system("ifconfig eth1 0.0.0.0 up")
-        mac_arr = hsr.get_mac(self)
+        # os.system("ifconfig eth0 0.0.0.0 up")
+        # os.system("ifconfig eth1 0.0.0.0 up")
+        mac_arr = Hsr.get_mac(self)
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
                 mac = mac_arr[i][1]
                 
         hsr_comand = ["ifconfig eth0 0.0.0.0 down && ifconfig eth1 0.0.0.0 down",
-                    "ifconfig eth0 hw ether "+mac+" && ifconfig eth1 hw ether "+mac,
+                    "ifconfig eth0 hw ether {} && ifconfig eth1 hw ether {}".format(mac, mac),
                     "ifconfig eth0 0.0.0.0 up && ifconfig eth1 0.0.0.0 up",
-                    "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision " + supervision + " version " + version,
-                    "ifconfig hsr0 " + ip[0:len(ip)-1] + " netmask " + str(netmask)]
+                    "ip link add name hsr0 type hsr slave1 eth0 slave2 eth1 supervision {} version {}".format(supervision,version),
+                    "ifconfig hsr0 {} netmask {}".format(ip[0:len(ip)-1],str(netmask))]
         mask = 0b00000100
         result_tx1, result_rx1 = ksz.spi2(adress = 0x04E)
         result_tx2, result_rx2 = ksz.spi2(adress = 0x05A)
@@ -90,18 +93,13 @@ class hsr:
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
 
-
-
-
     def hsr_disable(self,eth0_ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
-        mac = hsr.find_mac_in_txt(self)
+        mac = Hsr.find_mac_in_txt(self)
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
-        os.system("ifconfig eth0 "+ eth0_ip[0:len(eth0_ip)-1] +" && ifconfig eth1 hw ether "+mac+" down")
+        os.system("ifconfig eth0 {} && ifconfig eth1 hw ether {} down".format(eth0_ip[0:len(eth0_ip)-1], mac))
         print("\033[32m {}".format("Ok"))
         print("\033[37m {}".format(" "))
-    
-    
     
 
 if __name__ == "__main__":
@@ -112,8 +110,8 @@ if __name__ == "__main__":
     for i in range(2,len(sys.argv)):
         args.append(sys.argv[i])
     try: 
-        getattr(hsr, method_name)(*args)
+        getattr(Hsr, method_name)(*args)
 
     except:
         print("There is no parameter")
-        getattr(hsr, method_name)()
+        getattr(Hsr, method_name)()
