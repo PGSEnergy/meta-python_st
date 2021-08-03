@@ -1,5 +1,6 @@
 import os
 import threading
+
 def calculator(num):
         degree = int(num / 8)
         ret = ""

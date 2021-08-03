@@ -59,13 +59,14 @@ class Hsr:
             print(a1)
             if a1[0] == interface:
                 return a1[1]
-                
-    def hsr_enable(self,silent = 0,ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
+
+    @staticmethod            
+    def hsr_enable(silent = 0,ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read(),
     netmask = str(calculator(int(os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))),
     version = "1",supervision = "45"):
         # os.system("ifconfig eth0 0.0.0.0 up")
         # os.system("ifconfig eth1 0.0.0.0 up")
-        mac_arr = Hsr.get_mac(self)
+        mac_arr = Hsr.get_mac()
         for i in range(0,len(mac_arr)-1):
             if mac_arr[i][0] == "eth0":
                 mac = mac_arr[i][1]
@@ -93,8 +94,9 @@ class Hsr:
             print("\033[32m {}".format("Ok"))
             print("\033[37m {}".format(" "))
 
-    def hsr_disable(self,eth0_ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
-        mac = Hsr.find_mac_in_txt(self)
+    @staticmethod
+    def hsr_disable(eth0_ip = os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"').read()):
+        mac = Hsr.find_mac_in_txt()
         os.system("ifconfig hsr0 down")
         os.system("ip link delete hsr0")
         os.system("ifconfig eth0 {} && ifconfig eth1 hw ether {} down".format(eth0_ip[0:len(eth0_ip)-1], mac))
