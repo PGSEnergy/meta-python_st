@@ -18,8 +18,9 @@ class Hsr:
         for i in range(0, 4-degree-1):
             ret +=".0"
         return ret
-
-    def get_mac(self,interface = "eth1"):
+        
+    @staticmethod 
+    def get_mac(interface = "eth1"):
         f = open('mac.txt', 'w')
         command = "ifconfig | grep HWaddr"
         HW = "HWaddr"
@@ -45,8 +46,8 @@ class Hsr:
                 mac = a1[i][1]
 
         return a1
-
-    def find_mac_in_txt(self,interface = "eth1"):
+    @staticmethod 
+    def find_mac_in_txt(interface = "eth1"):
         f = open('mac.txt')
         counter = 0
         a = []
