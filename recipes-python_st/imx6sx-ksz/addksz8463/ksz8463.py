@@ -5,46 +5,46 @@ import sys
 import os
 import subprocess
 
-class ksz:
+class Ksz:
 
     def switch_enable():
-        ksz.spi2(adress = 0x000,data = [0x01,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x000,data = [0x01,0x00],rw = 1,max_speed = 5000000)
         
     
     def switch_disable():
-        ksz.spi2(adress = 0x000,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x000,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
     def switch_power_off():#broken
-        # result_tx, result_rx = ksz.spi2(adress=0X032,data=[0x1000,0x00],rw=1)
+        # result_tx, result_rx = Ksz.spi2(adress=0X032,data=[0x1000,0x00],rw=1)
         # print(result_tx,result_rx)
-        ksz.spitest(adress=0X032,data=[0x02,0x00],rw=1)
-        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
+        Ksz.spitest(adress=0X032,data=[0x02,0x00],rw=1)
+        Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
     def switch_power_on():#broken
-        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=1)
-        ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
+        Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=1)
+        Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
         
 
     def global_reset():#broken
-        # ksz.spi2(adress = 0x126,data = [0x1,0x1],rw = 1,max_speed = 5000000)
-        ksz.spitest(adress=0x126,data=[0x1,0x00],rw=1)
+        # Ksz.spi2(adress = 0x126,data = [0x1,0x1],rw = 1,max_speed = 5000000)
+        Ksz.spitest(adress=0x126,data=[0x1,0x00],rw=1)
         print("read")
-        ksz.spitest(adress=0x126,data=[0x01,0x00],rw=0)
+        Ksz.spitest(adress=0x126,data=[0x01,0x00],rw=0)
         # time.sleep(1)
-        # ksz.spi2(adress = 0x126,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-        ksz.spitest(adress=0x126,data=[0x00,0x00],rw=1)
+        # Ksz.spi2(adress = 0x126,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spitest(adress=0x126,data=[0x00,0x00],rw=1)
         print("read")
-        ksz.spitest(adress=0x126,data=[0x00,0x00],rw=0)
+        Ksz.spitest(adress=0x126,data=[0x00,0x00],rw=0)
 
     def blink():
         for i in range(0,10):
-            ksz.spi2(adress = 0x06C,data = [0x00,0x40],rw = 1,max_speed = 5000000)
-            ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+            Ksz.spi2(adress = 0x06C,data = [0x00,0x40],rw = 1,max_speed = 5000000)
+            Ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
             time.sleep(1)
-            ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-            ksz.spi2(adress = 0x084,data = [0x00,0x40],rw = 1,max_speed = 5000000)
+            Ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+            Ksz.spi2(adress = 0x084,data = [0x00,0x40],rw = 1,max_speed = 5000000)
             time.sleep(1)
-        ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
-        ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x084,data = [0x00,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x06C,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
     def spi2(adress,data = [0x00,0x00],rw = 0,bus = 0,dev = 0,max_speed = 12000000,mode = 0b00,bits_word = 8):
         spi = spidev.SpiDev()
@@ -54,7 +54,7 @@ class ksz:
         spi.cshigh = False
         spi.mode = mode
         spi.bits_per_word = bits_word
-        adress = int(ksz.convert_base(adress))
+        adress = int(Ksz.convert_base(adress))
         # print(adress)
         if rw == 0:
             mask1 = 0b00000000
@@ -93,10 +93,10 @@ class ksz:
         if n < to_base:
             return alphabet[n]
         else:
-            return ksz.convert_base(n // to_base, to_base) + alphabet[n % to_base]
+            return Ksz.convert_base(n // to_base, to_base) + alphabet[n % to_base]
 
     def spitest(adress = 0x00,data = [0x00,0x00],rw = 0):
-        txData, rxData = ksz.spi2(adress,data,rw)
+        txData, rxData = Ksz.spi2(adress,data,rw)
 
         print(" ")
         print("TX_DATA:")
@@ -113,10 +113,10 @@ class ksz:
         return str(format(rxData[3],'#X')+format(rxData[2],'X'))
 
     def spitest_silence():
-        txData, rxData = ksz.spi2(adress = 0x00,data = [0x00,0x00])
+        txData, rxData = Ksz.spi2(adress = 0x00,data = [0x00,0x00])
         return str(format(rxData[3],'#X')+format(rxData[2],'X'))
     def spi_read_copp():
-        txData, rxData = ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
+        txData, rxData = Ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 0,max_speed = 5000000)
 
         print(" ")
         print("TX_DATA:")
@@ -139,7 +139,7 @@ class ksz:
             print(hex(adress))
             logging.info(" ")
             logging.info(hex(adress))
-            txData, rxData = ksz.spi2(adress = adress,data = [0x00,0x00],rw = 0)
+            txData, rxData = Ksz.spi2(adress = adress,data = [0x00,0x00],rw = 0)
             TX = format(txData[0],'#X')+format(txData[1],'X')
             RX = format(rxData[3],'#X')+format(rxData[2],'X')
             logging.info("TX:" + TX)
@@ -150,22 +150,22 @@ class ksz:
         print("\033[37m {}".format(" "))
 
     def port_1_power_off():
-        ksz.spi2(adress = 0x04C,data = [0x20,0x39],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x04C,data = [0x20,0x39],rw = 1,max_speed = 5000000)
 
     def port_1_power_on():
-        ksz.spi2(adress = 0x04C,data = [0x20,0x31],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x04C,data = [0x20,0x31],rw = 1,max_speed = 5000000)
 
     def port_2_power_off():
-        ksz.spi2(adress = 0x058,data = [0x20,0x39],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x058,data = [0x20,0x39],rw = 1,max_speed = 5000000)
 
     def port_2_power_on():
-        ksz.spi2(adress = 0x058,data = [0x20,0x31],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x058,data = [0x20,0x31],rw = 1,max_speed = 5000000)
 
     def select_fiber_mode():
-        ksz.spi2(adress = 0x0D8,data = [0x3E,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x0D8,data = [0x3E,0x00],rw = 1,max_speed = 5000000)
 
     def select_copper_mode():
-        ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 1,max_speed = 5000000)
+        Ksz.spi2(adress = 0x0D8,data = [0xFE,0x00],rw = 1,max_speed = 5000000)
 
     def gpio_check_status(pin = 125):
         print("pin = " + str(pin))
@@ -217,7 +217,7 @@ class ksz:
         adress = start
         while(adress < stop):
             try:
-                ksz.gpio_check_status_silence(pin = adress)
+                Ksz.gpio_check_status_silence(pin = adress)
                 adress = adress + 1
             except:
                 logging.info("GPIO " + str(adress) +" status = busy")
@@ -227,15 +227,15 @@ class ksz:
         print("\033[37m {}".format(" "))
 
     def sel_copp_fib():
-        if ksz.gpio_check_status_silence(pin = 125) == 0:
-            ksz.select_copper_mode()
+        if Ksz.gpio_check_status_silence(pin = 125) == 0:
+            Ksz.select_copper_mode()
             print("Copper mode selected")
-        if ksz.gpio_check_status_silence(pin = 125) == 1:
-            ksz.select_fiber_mode()
+        if Ksz.gpio_check_status_silence(pin = 125) == 1:
+            Ksz.select_fiber_mode()
             print("Fiber mode selected")
 
     def read_status_port1():
-        result_tx, result_rx = ksz.spi2(adress = 0x04E)
+        result_tx, result_rx = Ksz.spi2(adress = 0x04E)
         if result_rx[3] == 8:
             print("Port 1 is down")
         if result_rx[3] == 44:
@@ -243,7 +243,7 @@ class ksz:
 
 
     def read_status_port2():
-        result_tx, result_rx = ksz.spi2(adress = 0x05A)
+        result_tx, result_rx = Ksz.spi2(adress = 0x05A)
         if result_rx[3] == 8:
             print("Port 2 is down")
         if result_rx[3] == 44:
@@ -259,8 +259,8 @@ if __name__ == "__main__":
     for i in range(2,len(sys.argv)):
         args.append(sys.argv[i])
     try: 
-        getattr(ksz, method_name)(*args)
+        getattr(Ksz, method_name)(*args)
 
     except:
         print("There is no parameter")
-        getattr(ksz, method_name)()
+        getattr(Ksz, method_name)()
