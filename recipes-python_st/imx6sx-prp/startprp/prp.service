@@ -4,8 +4,8 @@ DefaultDependencies=no
 
 [Service]
 Type=oneshot
-ExecStart=/prp/PRP.sh
-ExecStop=/prp/end.sh
+ExecStart=/kepm/prp/PRP.sh
+ExecStop=/kepm/prp/end.sh
 StandardOutput=tty
 
 [Install]
