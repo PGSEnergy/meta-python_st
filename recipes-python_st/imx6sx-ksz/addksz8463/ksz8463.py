@@ -14,12 +14,12 @@ class Ksz:
     def switch_disable():
         Ksz.spi2(adress = 0x000,data = [0x00,0x00],rw = 1,max_speed = 5000000)
 
-    def switch_power_off():#broken
+    def switch_power_off(): #broken
         # result_tx, result_rx = Ksz.spi2(adress=0X032,data=[0x1000,0x00],rw=1)
         # print(result_tx,result_rx)
         Ksz.spitest(adress=0X032,data=[0x02,0x00],rw=1)
         Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
-    def switch_power_on():#broken
+    def switch_power_on(): #broken
         Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=1)
         Ksz.spitest(adress=0X032,data=[0x00,0x00],rw=0)
         
