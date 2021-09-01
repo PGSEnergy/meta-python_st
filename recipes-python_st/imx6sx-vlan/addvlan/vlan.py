@@ -57,6 +57,7 @@ def vlan_stop(interface='eth0', id = '700'):
         f.write(wired[0:wired.find('VLAN')])
         f.close()
         os.popen('systemctl restart systemd-networkd.service')
+        os.popen(f'ifconfig {interface}.{id} down')
     except FileNotFoundError:
         print("\033[31m {}".format('Vlan is not available.'))
         print("\033[37m {}".format(" "))
