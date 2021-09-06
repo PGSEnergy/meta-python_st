@@ -1,4 +1,4 @@
-from ksz8463 import ksz
+from ksz8463 import Ksz as ksz
 import os
 import time
 import sys
