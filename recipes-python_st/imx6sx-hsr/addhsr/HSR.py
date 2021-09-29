@@ -22,6 +22,7 @@ class Hsr:
     @staticmethod 
     def get_mac(interface = "eth1"):
         f = open('mac.txt', 'w')
+        os.system("ifconfig {} up".format(interface))
         command = "ifconfig | grep HWaddr"
         HW = "HWaddr"
         mac = os.popen(command).read().split("\n")
@@ -41,6 +42,7 @@ class Hsr:
             f.write(a1[index][0] + ' ')
             f.write(a1[index][1] + '\n')
         f.close()
+        os.system("ifconfig {} down".format(interface))
         for i in range(0,len(a1)-1):
             if a1[i][0] == interface:
                 mac = a1[i][1]

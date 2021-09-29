@@ -15,7 +15,7 @@ def calculator(num):
 
 class MyThread(threading.Thread):
     def run(self):
-        os.system("/kepm/prp/PRP.sh "+netmask)
+        os.system("/kepm/prp/prpstart.sh "+netmask)
         pass
 
 netmask = str(calculator(int(os.popen('grep -v "Gate" /kepm/wired.network | grep -oE "\/[0-9]{1,2}"| grep -oE "\w+"').read()))) # Take the netmask from eth0
