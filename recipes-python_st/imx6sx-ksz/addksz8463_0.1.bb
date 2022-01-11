@@ -3,8 +3,7 @@ SECTION = "KSZ"
 LICENSE = "CLOSED"
 
 SRC_URI = "file://ksz8463.py \
-		   file://sel_copp_fib.py \
-		   file://ksz8463_user.py "
+		   file://sel_copp_fib.py "
 
 S = "${WORKDIR}"
 
