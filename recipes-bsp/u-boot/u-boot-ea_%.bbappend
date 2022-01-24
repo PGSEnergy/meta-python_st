@@ -1,8 +1,5 @@
-SRC_URI += "file://mx6sxea-com.h;subdir=git/include/configs \
-            file://.config;subdir=git \
-            "
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-
-PACKAGE_ARCH = "imx6sxea-com"
-
+do_cop() {
+  cp ~/ea-bsp/sources/meta-python_st/recipes-bsp/u-boot/u-boot-ea/imx6sxea-com/defconfig ${WORKDIR}/.config
+}
+addtask do_cop after do_configure before do_compile
