@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
+THIS_DIR=$(pwd)
 . sources/meta-fsl-bsp-release/imx/tools/setup-utils.sh
 
 CWD=`pwd`
@@ -201,7 +201,12 @@ if [ ! -e ../sources/meta-murata-wireless/recipes-kernel/firmware-imx/firmware-i
 fi
 
 #Patch conf
-patch -Np1 -r - $BUILD_DIR/conf < sources/meta-python_st/conf/conf.patch
+
+
+echo $BUILD_DIR
+cd $BUILD_DIR/conf
+patch < $THIS_DIR/sources/meta-python_st/conf/conf.patch
+cd  $THIS_DIR
 cd  $BUILD_DIR
 clean_up
 unset FSLDISTRO
