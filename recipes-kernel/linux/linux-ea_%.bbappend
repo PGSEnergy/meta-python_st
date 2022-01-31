@@ -11,7 +11,7 @@ SRC_URI = "git://github.com/Stefan12321/linux.git;protocol=git;branch=${SRCBRANC
 SRC_URI += "file://patch.patch;subdir=git/drivers/rpmsg \
             "
 SRCBRANCH = "master"
-SRCREV = "5cf830925fa49279e4d425f7bd25eaebb766a7bc"
+SRCREV = "fe038afcce6fcbd034454034e40b82f0fc729ca5"
 addtask copy_defconfig_vf after do_copy_defconfig before do_preconfigure
 
 do_copy_defconfig_vf () {
