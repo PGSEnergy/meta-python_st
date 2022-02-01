@@ -5,7 +5,8 @@ IMAGE_INSTALL = "\
    ea-files \
 "
 
-IMAGE_LINGUAS = " "
+GLIBC_GENERATE_LOCALES = "en_GB.UTF-8 en_US.UTF-8"
+IMAGE_LINGUAS ?= "en-gb"
 
 LICENSE = "MIT"
 

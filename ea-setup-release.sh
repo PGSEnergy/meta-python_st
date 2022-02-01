@@ -206,7 +206,6 @@ fi
 echo $BUILD_DIR
 cd $BUILD_DIR/conf
 patch < $THIS_DIR/sources/meta-python_st/conf/conf.patch
-cd  $THIS_DIR
-cd  $BUILD_DIR
+cd ..
 clean_up
 unset FSLDISTRO

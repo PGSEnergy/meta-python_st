@@ -1,7 +1,7 @@
-diff --git a/a/conf/bblayers.conf b/b/conf/bblayers.conf
-index 49313a5..f8bc193 100644
---- a/a/conf/bblayers.conf
-+++ b/b/conf/bblayers.conf
+diff --git a/b/conf/bblayers.conf b/a/conf/bblayers.conf
+index 49313a5..965021d 100644
+--- a/b/conf/bblayers.conf
++++ b/a/conf/bblayers.conf
 @@ -1,4 +1,4 @@
 -LCONF_VERSION = "6"
 +LCONF_VERSION = "7"
@@ -12,13 +12,13 @@ index 49313a5..f8bc193 100644
  #Embedded Artists Yocto layer
  BBLAYERS += " ${BSPDIR}/sources/meta-ea "
  BBLAYERS += " ${BSPDIR}/sources/meta-murata-wireless "
++#KEPM layer
 +BBLAYERS += "${BSPDIR}/sources/meta-vf"
-+
 +BBLAYERS += "${BSPDIR}/sources/meta-python_st"
-diff --git a/a/conf/local.conf b/b/conf/local.conf
-index cf88bdb..82eca19 100644
---- a/a/conf/local.conf
-+++ b/b/conf/local.conf
+diff --git a/b/conf/local.conf b/a/conf/local.conf
+index cf88bdb..d145356 100644
+--- a/b/conf/local.conf
++++ b/a/conf/local.conf
 @@ -4,7 +4,7 @@ PACKAGE_CLASSES ?= "package_rpm"
  EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
  USER_CLASSES ?= "buildstats image-mklibs image-prelink"
@@ -28,7 +28,7 @@ index cf88bdb..82eca19 100644
      STOPTASKS,${TMPDIR},1G,100K \
      STOPTASKS,${DL_DIR},1G,100K \
      STOPTASKS,${SSTATE_DIR},1G,100K \
-@@ -17,5 +17,51 @@ PACKAGECONFIG_append_pn-qemu-native = " sdl"
+@@ -17,5 +17,75 @@ PACKAGECONFIG_append_pn-qemu-native = " sdl"
  PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
  CONF_VERSION = "1"
  
@@ -37,6 +37,14 @@ index cf88bdb..82eca19 100644
 +
  DL_DIR ?= "${BSPDIR}/downloads/"
  ACCEPT_FSL_EULA = "1"
++
++TOOLCHAIN_TARGET_TASK_append = " libpcap-dev"
++
++
++
++LOCALE_UTF8_ONLY = "1"
++LOCALE_UTF8_IS_DEFAULT = "1" 
++
 +IMAGE_INSTALL_append = " \
 +   wget \
 +   nano \
@@ -58,13 +66,29 @@ index cf88bdb..82eca19 100644
 +   linuxptp \
 +   python3 \
 +   python3-spidev \
++   python3-pydbus \
++   glib-2.0 \
++   dbus \
++   libpcap \
++   libpcap-dev \
 +   addksz8463 \
++   addhsr \
++   addvlan \
++   addwebserver \
 +   startksz8463 \
 +   ethtool \
 +   iproute2 \
++   htop \
++   coreutils \
++   glibc-utils \ 
++   localedef \
++   procps \
++   sudo \
++   bash \
 +"
-+
-+EXTRA_IMAGE_FEATURES = " ssh-server-openssh"
++#X11
++DISTRO_FEATURES_append += " X11"
++EXTRA_IMAGE_FEATURES = " ssh-server-openssh debug-tweaks"
 +#CORE_IMAGE_EXTRA_INSTALL += " firmware-imx-sdma"
 +#KERNEL_MODULE_AUTOLOAD += "rpmsg_multiept"
 +#KERNEL_MODULE_AUTOLOAD += "spi_loopback_test"
@@ -80,13 +104,3 @@ index cf88bdb..82eca19 100644
 +  usermod -s /bin/sh kepm; \
 +  usermod -P 'pass_KEPM_2020' root; \
 +"
-diff --git a/b/conf/sanity_info b/b/conf/sanity_info
-new file mode 100644
-index 0000000..f518f93
---- /dev/null
-+++ b/b/conf/sanity_info
-@@ -0,0 +1,4 @@
-+SANITY_VERSION 1
-+TMPDIR /home/stefan/ea-bsp/build_dir/tmp
-+SSTATE_DIR /home/stefan/ea-bsp/build_dir/sstate-cache
-+NATIVELSBSTRING ubuntu-18.04
