@@ -1,6 +1,6 @@
 
 SRCBRANCH = "2018.03"
-SRC_URI = "git://github.com/Stefan12321/u-boot.git;branch=${SRCBRANCH} \
+SRC_URI = "git://github.com/PGSEnergy/u-boot.git;branch=${SRCBRANCH} \
            "
 SRCREV = "fce8edb4ee61a1e383e528406bb45d5a0c7c0173"
 
