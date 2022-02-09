@@ -10,7 +10,7 @@ PACKAGE_ARCH = "imx6sxea-com"
 SRC_URI = "git://github.com/PGSEnergy/linux.git;protocol=git;branch=${SRCBRANCH}"
 
 SRCBRANCH = "APK"
-SRCREV = "3940c573492a8f957d122014aff66a110f70a7a4"
+SRCREV = "a18fcee4718724353e4b82c825aa96f993a681dd"
 addtask copy_defconfig_vf after do_copy_defconfig before do_preconfigure
 
 do_copy_defconfig_vf () {
