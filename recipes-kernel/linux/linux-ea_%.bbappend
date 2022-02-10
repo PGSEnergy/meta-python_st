@@ -9,8 +9,8 @@ PACKAGE_ARCH = "imx6sxea-com"
 
 SRC_URI = "git://github.com/PGSEnergy/linux.git;protocol=git;branch=${SRCBRANCH}"
 
-SRCBRANCH = "master"
-SRCREV = "eefc0bb4e79fd774381a7a6d507cedf97a37b8ac"
+SRCBRANCH = "UPZA"
+SRCREV = "02f74e7a3dd19ddf9cffcccb2b038a91320fb0f6"
 addtask copy_defconfig_vf after do_copy_defconfig before do_preconfigure
 
 do_copy_defconfig_vf () {

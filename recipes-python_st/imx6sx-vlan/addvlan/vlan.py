@@ -45,6 +45,7 @@ def vlan_stop(interface='eth0', id = '700'):
     try:
         os.remove('/etc/systemd/network/{}.{}.netdev'.format(interface, id)) 
         os.remove('/etc/systemd/network/{}.{}.network'.format(interface, id))
+	os.popen('ip link delete {}.{}'.format(interface, id))
 
         if interface == 'eth0': filename = 'wired'
         if interface == 'eth1': filename = 'second_wired'
