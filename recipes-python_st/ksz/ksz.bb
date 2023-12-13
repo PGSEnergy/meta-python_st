@@ -16,8 +16,8 @@ do_install() {
     install -d ${D}/kepm/ksz
     install -d ${D}${systemd_unitdir}/system
 
-    install -m 0755 ${WORKDIR}/ksz8463.py ${D}/kepm/ksz
-    install -m 0755 ${WORKDIR}/sel_copp_fib.py ${D}/kepm/ksz
+    install -m 0777 ${WORKDIR}/ksz8463.py ${D}/kepm/ksz
+    install -m 0777 ${WORKDIR}/sel_copp_fib.py ${D}/kepm/ksz
 
     install -m 0644 ${WORKDIR}/ksz8463.service ${D}${systemd_unitdir}/system
 }
