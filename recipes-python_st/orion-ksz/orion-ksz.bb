@@ -23,7 +23,9 @@ do_install() {
         install -m 0777 ${WORKDIR}/ksz8463_ars.py ${D}/kepm/ksz/ksz8463.py
         install -m 0777 ${WORKDIR}/sel_copp_fib_ars.py ${D}/kepm/ksz/sel_copp_fib.py
     elif [ ${ORION_DEVICE_TYPE} = "upza" ]; then
-        true # a placeholder
+        # NOTE: UPZA has the same files as APK for now
+        install -m 0777 ${WORKDIR}/ksz8463_apk.py ${D}/kepm/ksz/ksz8463.py
+        install -m 0777 ${WORKDIR}/sel_copp_fib_apk.py ${D}/kepm/ksz/sel_copp_fib.py
     elif [ ${ORION_DEVICE_TYPE} = "apk_rx" ] || [ ${ORION_DEVICE_TYPE} = "apk_tx" ]; then
         install -m 0777 ${WORKDIR}/ksz8463_apk.py ${D}/kepm/ksz/ksz8463.py
         install -m 0777 ${WORKDIR}/sel_copp_fib_apk.py ${D}/kepm/ksz/sel_copp_fib.py
